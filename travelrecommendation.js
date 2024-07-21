@@ -1,13 +1,9 @@
-var result = document.querySelector("#destinations");
-var hero = document.querySelector("#hero");
-
-
-document.querySelector("#search").addEventListener('click',function(){
+function getdata(){
 	
 	
-	var input = document.querySelector(".search-bar input").value.toLowerCase();
-	
-	fetch('travel_recommendation_api.json', { cache: 'no-store' })
+	var input = document.getElementById('searchinput').value.toLowerCase();
+	console.log(input)
+	fetch('travelrecommendation.json', { cache: 'no-store' })
 		.then( response => response.json())
 		.then( data => {
 			
@@ -35,18 +31,14 @@ document.querySelector("#search").addEventListener('click',function(){
 		});
 
 	
-});
+}
 
 
 function search(data){
-	hero.style.display = "none";
-	result.style.display = "";
-	console.log(data);
-	
-	var destinations_grid = document.querySelector(".destinations-grid");
+	var destinations_grid = document.getElementById('Result');
 	destinations_grid.innerHTML = "";
 	
-	if(data == null){
+	if(data === null || data === ''){
 		destinations_grid.innerHTML = ` 
 			<div class="destinations-grid">
 				<p><b>No result found</b></p>       
@@ -58,12 +50,12 @@ function search(data){
 	data.forEach((city)=>{
 		console.log(city.name);
 		var mydiv = document.createElement('div');
-		mydiv.classList.add('destination-card');
+		mydiv.classList.add('resultvalues');
 		
 		var newhtml = `
-			<img src="images/${city.imageUrl}" >
-			<h3>${city.name}</h3>
-			<p>${city.description}</p>
+			<p class="resulttittle">${city.name}</p>
+			<img class="resultimg" src="${city.imageUrl}" >
+			<p class="resultdescription">${city.description}</p>
 		`;
 		
 		mydiv.innerHTML = newhtml;
@@ -75,8 +67,3 @@ function search(data){
 	
 }
 
-
-document.querySelector("#clear").addEventListener('click',function(){
-	
-	document.querySelector(".search-bar input").value = "";
-});
